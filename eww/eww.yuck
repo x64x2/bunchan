@@ -1,0 +1,185 @@
+(defwindow bar
+  :monitor 0
+  :hexpand false
+  :vexpand false
+  :stacking "bg"
+  :geometry (geometry :anchor "top center" :x 0 :y 10 :width "98%" :height "30px")
+  :reserve (struts :distance "46px" :side "top")
+  (bar :screen 0))
+
+;; Variables
+(defvar terminal "st")
+(deflisten workspaces_listen "sh ./modules/workspaces.sh")
+(defpoll mail_poll :interval "1m" :initial "0" "python3 ./modules/unread-mail.py" )
+(defpoll music_poll :interval "1s" :initial "Offline." "mpc current --format '%artist% - %title%'")
+(defpoll music_state_poll :interval "1s" "mpc status %state%")
+(defpoll weather_poll :interval "20m" :initial "摒 +0°C" "sh ./modules/weather.sh")
+(defpoll TIME :interval "1s" "date +%H:%M")
+(defpoll speaker_poll :interval "999h" "sh modules/speaker.sh")
+(defpoll uptime_poll :interval "999h" "uptime -p | sed -e 's/up //g'")
+
+;; Music vars
+(defpoll SONG :interval "1s" `sh ./modules/mpd.sh song`)
+(defpoll ARTIST :interval "1s" `sh ./modules/mpd.sh artist`)
+(defpoll COVER :interval "1s" `sh ./modules/mpd.sh cover`)
+(defpoll CURRENT :interval "1s" `sh ./modules/mpd.sh progress`)
+(defpoll PROGRESS :interval "1s" `sh ./modules/mpd.sh ppprogress`)
+
+(defpoll DAY :interval "10h" "date '+%d'")
+(defpoll MONTH :interval "10h" "month=$(date +%m);month=$((month-1));echo $month")
+(defpoll YEAR :interval "10h" "date '+%Y'")
+;; Widgets
+(defwidget icon-module [icon ?class ?visible]
+  (box :class "${class} icon-module"
+       :orientation "h"
+       :halign "end"
+       :space-evenly false
+       :visible {visible ?: true} ; because the argument is optional
+    (label :class "icon-module__icon" :text "${icon}")
+    (children)))
+
+(defwidget workspaces []
+  (literal :content workspaces_listen))
+
+(defwidget menu []
+  (button :class "menu" 
+          :onclick "rofi -show drun -theme $HOME/.config/rofi/themes/launcher.rasi"
+          :onrightclick `sh ./modules/powermenu.sh`
+    ""))
+
+(defwidget music []
+  (box :class "music"
+       :orientation "h"
+       :halign "center"
+       :space-evenly false
+    (button :class "prev"
+         :orientation "h"
+         :halign "center"
+         :space-evenly false
+         :onclick `sh ./modules/mpd.sh prev`
+       "玲")
+    (button :class "toggle"
+         :orientation "h"
+         :halign "center"
+         :space-evenly false
+         :onclick `sh ./modules/mpd.sh toggle`
+       {music_state_poll == "playing" ? "" : "契"})
+    (button :class "content"
+         :orientation "h"
+         :halign "center"
+         :space-evenly false
+         :onclick `sh ./modules/mpd.sh launch`
+      {music_poll == "" ? "None" : music_poll})
+    (button :class "stop"
+         :orientation "h"
+         :halign "center"
+         :space-evenly false
+         :onclick `sh ./modules/mpd.sh stop`
+      "栗")
+    (button :class "next"
+         :orientation "h"
+         :halign "center"
+         :space-evenly false
+         :onclick `sh ./modules/mpd.sh next`
+      "怜")))
+
+(defwidget weather []
+  (button :class "weather"
+       :orientation "h"
+       :halign "center"
+       :space-evenly false
+       :onclick "${terminal} weather"
+    {weather_poll}))
+
+(defwidget time []
+  (button :class "time"
+          :onclick "sh ./modules/calendar.sh"
+    " ${TIME}"))
+
+(defwidget mail []
+  (button :class "mail"
+       :onclick "${terminal} neomutt"
+    " ${mail_poll} unread"))
+
+(defwidget speaker []
+  (icon-module :class "speaker" 
+               :icon {speaker_poll.icon}
+    (eventbox :onscroll `eww update speaker_poll="$(sh ./modules/speaker.sh {})"`
+      (button :onclick `eww update speaker_poll="$(sh ./modules/speaker.sh toggle)"`
+        (label :text {speaker_poll.content})))))
+
+(defwindow player
+  :monitor 0
+  :stacking "bg"
+  :geometry (geometry :anchor "top center" :x 0 :y 60 :width 610 :height 300)
+  (box :class "player"
+    (box :class "image" 
+         :style "background-image: url('${COVER}');")
+    (box :class "right"
+         :orientation "v"
+      (box :class "details"
+         :orientation "v"
+         :valign "center"
+         :space-evenly false
+        (label :class "name" :text SONG)
+        (label :class "artist" :text ARTIST))
+      (box :class "progress" :valign "end" :halign "end" :vexpand "false" :hexpand "false" :orientation "v" :space-evenly false :spacing 10
+        (scale :onscroll "mpc -q seek +1" :min 0 :active "true" :max 100 :value CURRENT)
+        (label :class "progress" :text PROGRESS))
+      )
+    ))
+
+(defwindow calendar
+	:geometry (geometry :x "-1%" 
+						:y 60
+						:width 270 
+						:height 60
+						:anchor "top right")
+  (box :class "cal-box" 
+		 :orientation "v"
+	(box :class "cal-inner-box"
+	(calendar :class "cal" 
+			  :day DAY 
+			  :month MONTH 
+			  :year YEAR))))
+
+
+(defwindow powermenu
+  :monitor 0
+  :stacking "bg"
+  :geometry (geometry :anchor "top left" :x "1%" :y 60 :width 420 :height 150)
+  (box :class "powermenu"
+       :orientation "v"
+      (box :class "header" 
+        "Uptime: ${uptime_poll}")
+      (box :class "footer"
+           :spacing 20
+           :halign "center"
+           :valign "end"
+        (button :class "sleep" :width 75 :height 75 :onclick "sh ./modules/powermenu.sh sleep" "⏾")
+        (button :class "lock" :width 75 :height 75 :onclick "sh ./modules/powermenu.sh lock" "")
+        (button :class "reboot" :width 75 :height 75 :onclick "sh ./modules/powermenu.sh reboot" "")
+        (button :class "poweroff" :width 75 :height 75 :onclick "sh ./modules/powermenu.sh poweroff" "")
+        )))
+
+(defwidget bar [screen]
+  (centerbox :orientation "h"
+      :class "bar"
+    (box :halign "start"
+         :space-evenly false
+         :class "left"
+    (menu)
+    (workspaces))
+    (box :halign "center"
+         :space-evenly false
+         :class "center"
+    (music))
+    (box :halign "end"
+         :spacing 12
+         :hexpand true
+         :space-evenly false
+         :class "right"
+    (mail)
+    (weather)
+    (speaker)
+    (time))))
