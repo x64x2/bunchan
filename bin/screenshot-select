@@ -1,8 +1,0 @@
-#! /bin/sh
-output="$HOME/Pictures/scrot/%Y-%m-%d-%T-select.png"
-error () {
-  notify-send "Error!"
-  exit
-}
-scrot "$output" --select --line mode=edge -e "xclip -selection clipboard -target image/png -i $output" || error
-notify-send "OK?"
