@@ -1,0 +1,129 @@
+
+	 body {
+	   background-color: black;
+	   color: rgb(145, 0, 0);
+	 }
+	 body
+    
+	 
+		* {
+			font-family: Courrier, monospace;
+		}
+		code { 
+			font-family: monospace;
+		}
+		#logo1 {
+			font-size: 42px;
+			 background-color: #1806a3;
+			 color:black;
+			 padding: 0px;
+    }
+   #logo2{
+     font-size: 36px;
+			 color: #2C17FF;
+			 text-decoration: underline;
+
+   }
+   #logover{
+     font-size: 35%;
+     text-decoration: underline;
+     margin-top: 0px;
+     padding-top: 0px;
+     color: #bd2600;
+
+  }
+
+    div p {
+    margin-left: 8px;
+    margin-top: 2px;
+    }
+    div.comments_box, div.comment{
+      border: inset 2px #2E0EEC;
+      padding: 4px 2px;
+      margin: 8px 0px;
+    }
+    a.link, a.link:visited{
+      color: rgb(0, 226, 0);
+      border: none;
+			 font-weight: bold;
+    }
+    div a{
+      margin-right: 12px;
+    
+    }
+    div b{
+      color: darkgrey;    
+      font-size: 60%;
+    }
+
+		small.error {
+			color: red;
+			font-weight: bold;
+		}
+		small.error::before {
+			content: "Error! ";
+    }
+    a{
+      color: aqua;
+      border-left: solid 4px blue;
+      padding-left: 4px;
+      
+    }
+    a:visited{
+     border-left: solid 4px #777;
+     color: grey;
+    }
+    a.nlk{
+      border: none;
+      
+    }
+    .notify{
+      font-size: 75%;
+      color: rgb(185, 0, 231);
+    }
+    .vote{
+    margin: 4px;
+    
+    }
+    .view_title{
+      text-decoration: underline;
+      color: #3D70FF;
+    }
+    .view_time{ 
+    margin-left: 4px;
+    }
+    .view_view{
+      color: darkgrey;
+    }
+    .com{
+      border-left: solid 3px white;
+      padding-left: 5px;
+    }
+    .com_auth{
+      font-size: 100%;
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+    .com_tstamp{
+      font-size: 50%;
+      color: darkgrey;
+      margin-left: 12px;
+    }
+
+    form {
+      border: 2px solid white;
+      padding: 2px;
+    }
+    .tsdiff{
+      color: darkgrey;
+      margin-left: 10px;
+    }
+    .menu > a, .menu > a:visited{
+      color:white;
+      border: none;
+      margin: 0px 8px;
+    }
+    #voteform{
+      visibility: hidden;
+    
+    }
