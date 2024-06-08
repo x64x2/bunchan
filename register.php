@@ -1,5 +1,5 @@
 <?php
-require 'funcdefs.php';
+require 'foo.php';
 ?><html>
 <head>
 	<title>3ga- registration</title>
@@ -18,5 +18,8 @@ require 'funcdefs.php';
   <?php elseif(isset($_POST['nuser']) and isset($_POST['npassword'])): ?>
     <?php newuser($_POST['nuser'],$_POST['npassword']); ?>
   <?php endif; ?>
+</body>
+</html>
+
 </body>
 </html>
