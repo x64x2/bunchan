@@ -1,5 +1,5 @@
 <?php
-require 'funcdefs.php';
+require 'foo.php';
 // DELETE THIS WHEN DEPLOYING
 if (isset($_GET['reset'])){
   global $db;
