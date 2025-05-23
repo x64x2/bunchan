@@ -4,7 +4,7 @@ coherent noise is often used by graphics programmers to generate natural-looking
 
  - gcc 9.4.0 under Gentoo Linux(x86)
 
-it is not known if libnoise will compile on 64-bit platforms like winducks, although
+it is not known if libnoise will compile on 64-bit platforms like winducks.
 
 
  ## Noise Modules
