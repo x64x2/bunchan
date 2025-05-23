@@ -1,21 +1,22 @@
-https://sizeof.cat/post/cyberpunk-faq/
+libnoise is a portable C++ library that is used to generate coherent noise, a type of smoothly-changing noise. libnoise can generate perlin noise, ridged multifractal noise, and other types of coherent noise.
+
+coherent noise is often used by graphics programmers to generate natural-looking textures, planetary terrain, and other things. It can also be used to move critters in a realistic way. libnoise is known to compile using the following compiler:
+
+ - gcc 9.4.0 under Gentoo Linux(x86)
+
+it is not known if libnoise will compile on 64-bit platforms like winducks, although
 
 
-Reference books (PW: ABD52oM8T1fghmY0): https://mega.nz/#F!YigVhZCZ!RznVxTiA0iN-N6Ps01pEJw
-/sec/ PDFs: https://mega.nz/#F!zGJT1QQQ!O-8yiH845GN26ajAvkoLkA
-EFF anti-surveillance: https://ssd.eff.org/
-Other library: https://mega.nz/file/UCgEGAjb#rwNcnMAQCUUbSp8supsFvn9QEHCWUW86eLcZa16ZG4Y
+ ## Noise Modules
 
+in libnoise, coherent-noise generators are encapsulated in classes called noise modules, there are many different types of noise modules. some noise modules can combine or modify the outputs of other noise modules in various ways; you can join these modules together to generate very complex coherent noise.
 
-https://jinteki.industries/files/cyberlife.7z
+ a noise module receives a 3-dimensional input value from the application, computes the noise value given that input value, and returns the resulting value back to the application.
 
+if the application passes the same input value to a noise module, the noise module returns the same output value.
 
-a lightweight and simple BBS forum software written in PHP.
+all noise modules are derived from the "noise::module::Module abstract" base class.
 
+### References
 
-## Requirements
-
- - PHP 7.4 or higher
- - MySQL database
- - Web server (Apache, Nginx, etc.)
-
+- todo
